@@ -27,24 +27,19 @@
   </div>  
 </template>
 
-<script>
+<script setup>
 import { useBooksStore } from "@/stores/BooksStore.js"
+import { computed } from 'vue'
 import UiTitle from './UI/UiTitle.vue'
-export default {
-  components: { UiTitle },
+import { useRoute, useRouter } from "vue-router";
 
-  methods: {
-    back() {
-      this.$router.push({name: "Books"})
-    },
-  },
-  
-  computed: {
-    book() {
-      return useBooksStore().getBook(Number(this.$route.params.id))[0]
-    }
-  }
+const router = useRouter()
+const book = computed(() => useBooksStore().getBook(Number(useRoute().params.id))[0])  
+
+function back() {
+  router.push({name: "Books"})
 }
+
 </script>
 
 <style scoped>

@@ -16,12 +16,6 @@
         :key="book.id"
       >
         <div class="list__item__books__buttons">
-          <!-- <button
-            class="button button__remove"
-            @click="$router.push({name: 'Book', params: {id: book.id} })"
-          >
-            Открыть
-          </button> -->
           <ui-button
             class="button button__remove"
             @click="$router.push({name: 'Book', params: {id: book.id} })"
@@ -34,7 +28,7 @@
             Редактировать
           </ui-button>
 
-          <ui-button class="button button__remove" @click="this.booksStore.deleteBook(book.id)">
+          <ui-button class="button button__remove" @click="useBooksStore().deleteBook(book.id)">
             Удалить
           </ui-button>
         </div>
@@ -45,7 +39,7 @@
           {{ book.price }} р
         </p>
         <p class="book__title">
-          {{ this.checkBookTitle(book.title) }}
+          {{ checkBookTitle(book.title) }}
         </p>
         <p class="book__author">
           {{ book.first_name }} {{ book.last_name }}
@@ -55,29 +49,15 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useBooksStore } from "@/stores/BooksStore.js"
 import UiButton from './UI/UiButton.vue'
-export default {
-  components: { UiButton },
-  
-  data() {
-    return {
-      booksStore: useBooksStore()
-    }
-  },
+import { computed } from "vue";
 
-  computed: {
-    books() {
-      return this.booksStore.books
-    }
-  },
+const books = computed(() => useBooksStore().books)
 
-  methods: {
-    checkBookTitle(value) {
-      return value.length > 23 ? value.slice(0,23) : value
-    },  
-  }
+function checkBookTitle(value) {
+  return value.length > 23 ? value.slice(0,23) : value
 }
 </script>
 

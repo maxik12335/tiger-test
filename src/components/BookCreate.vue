@@ -82,91 +82,56 @@
   </div>  
 </template>
 
-<script>
+<script setup>
 import { useBooksStore } from "@/stores/BooksStore.js"
+import { ref } from 'vue';
 import UiInput from './UI/UiInput.vue'
 import UiButton from './UI/UiButton.vue'
 import UiTitle from './UI/UiTitle.vue'
-export default {
-  components: { UiInput, UiButton, UiTitle },
-  
-  data() {
-    return {
-      year: null,
-      price: null,
-      title: null,
-      description: null,
-      first_name: null,
-      last_name: null,
-      src: null,
-      checkSrc: String
-    }
-  },  
+import { useRouter } from "vue-router";
 
-  methods: {
-    setSrcFile(event) {
-      this.src = URL.createObjectURL(event.target.files[0])
-    },
+const router = useRouter()
 
-    checkedAddImage(value) {
-      value === "file" ? this.checkSrc = "file" : this.checkSrc = "link"
-    },
+const year = ref(null)
+const price = ref(null)
+const title = ref(null)
+const description = ref(null)
+const first_name = ref(null)
+const last_name = ref(null)
+const src = ref(null)
+const checkSrc = ref("")
 
-    back() {
-      this.$router.push({name: "Books"})
-    },  
+function checkedAddImage(value) {
+  value === "file" ? checkSrc.value = "file" : checkSrc.value = "link"
+}
 
-    createBook() {
-      if(this.year === null || this.year === "") {
-        alert("Заполните все поля")
-        return
-      }
+function setSrcFile(event) {
+  src.value = URL.createObjectURL(event.target.files[0])
+}
 
-      if(this.price === null || this.price === "") {
-        alert("Заполните все поля")
-        return
-      }
+function back() {
+  router.push({name: "Books"})
+}
 
-      if(this.title === null || this.title === "") {
-        alert("Заполните все поля")
-        return
-      }
-
-      if(this.description === null || this.description === "") {
-        alert("Заполните все поля")
-        return
-      }
-
-      if(this.first_name === null || this.first_name === "") {
-        alert("Заполните все поля")
-        return
-      }
-
-      if(this.last_name === null || this.last_name === "") {
-        alert("Заполните все поля")
-        return
-      }
-
-      if(this.src === null || this.src === "") {
-        alert("Заполните все поля")
-        return
-      }
-
-      const newBook = {
-        id: Date.now(),
-        year: this.year,
-        price: this.price,
-        title: this.title,
-        description: this.description,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        src: this.src
-      }      
-
-      useBooksStore().createBook(newBook)
-      this.$router.push({name: "Books"})
-    }
+function createBook() {
+  if (!year.value || !price.value || !title.value || !description.value || !first_name.value || !last_name.value || !src.value) {
+    alert("Заполните все поля");
+    return;
   }
+
+  const newBook = {
+    id: Date.now(),
+    year: year.value,
+    price: price.value,
+    title: title.value,
+    description: description.value,
+    first_name: first_name.value,
+    last_name: last_name.value,
+    src: src.value
+  }       
+
+  useBooksStore().createBook(newBook)
+  router.push({name: "Books"})
 }
 </script>
 
