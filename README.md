@@ -4,7 +4,5 @@
   2. npm install
   3. vue serve
 
-Не увидел сразу, но решил доделать Options API
-В другой ветке будет Composotion API
-
-На всё ушло примерно 2 дня
+Думаю, делаю что-то не так с Composition API. Пока не разобрался с ref() вместе с Pinia, не обновляет state
+Но работает с computed

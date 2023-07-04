@@ -81,57 +81,58 @@
   </div>  
 </template>
 
-<script>
+<script setup>
 import { useBooksStore } from "@/stores/BooksStore.js"
+import { useRoute, useRouter } from "vue-router"
 import UiButton from './UI/UiButton.vue'
 import UiInput from './UI/UiInput.vue'
 import UiTitle from './UI/UiTitle.vue'
-export default {
-  components: { UiButton, UiInput, UiTitle },
-  
-  data() {
-    return {
-      id: useBooksStore().getBook(Number(this.$route.params.id))[0].id,
-      year: useBooksStore().getBook(Number(this.$route.params.id))[0].year,
-      price: useBooksStore().getBook(Number(this.$route.params.id))[0].price,
-      title: useBooksStore().getBook(Number(this.$route.params.id))[0].title,
-      description: useBooksStore().getBook(Number(this.$route.params.id))[0].description,
-      first_name: useBooksStore().getBook(Number(this.$route.params.id))[0].first_name,
-      last_name: useBooksStore().getBook(Number(this.$route.params.id))[0].last_name,
-      src: useBooksStore().getBook(Number(this.$route.params.id))[0].src,
-      checkSrc: String
-    }
-  },
+import { ref } from "vue"
 
-  methods: {
-    setSrcFile(event) {
-      this.src = URL.createObjectURL(event.target.files[0])
-    },
+const router = useRouter()
+const route = useRoute()
 
-    checkedAddImage(value) {
-      value === "file" ? this.checkSrc = "file" : this.checkSrc = "link"
-    },
+const id = ref(useBooksStore().getBook(Number(route.params.id))[0].id)
+const year = ref(useBooksStore().getBook(Number(route.params.id))[0].year)
+const price = ref(useBooksStore().getBook(Number(route.params.id))[0].price)
+const title = ref(useBooksStore().getBook(Number(route.params.id))[0].title)
+const description = ref(useBooksStore().getBook(Number(route.params.id))[0].description)
+const first_name = ref(useBooksStore().getBook(Number(route.params.id))[0].first_name)
+const last_name = ref(useBooksStore().getBook(Number(route.params.id))[0].last_name)
+const src = ref(useBooksStore().getBook(Number(route.params.id))[0].src)
+const checkSrc = ref("")
 
-    back() {
-      this.$router.push({name: "Books"})
-    },    
-    
-    editBook() {
-      const newBook = {
-        id: this.id,
-        year: this.year,
-        price: this.price,
-        title: this.title,
-        description: this.description,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        src: this.src
-      }      
+function checkedAddImage(value) {
+  value === "file" ? checkSrc.value = "file" : checkSrc.value = "link"
+}
 
-      useBooksStore().editBook(newBook)
-      this.$router.push({name: "Books"})
-    }
+function setSrcFile(event) {
+  src.value = URL.createObjectURL(event.target.files[0])
+}
+
+function back() {
+  router.push({name: "Books"})
+}
+
+function editBook() {
+  if (!year.value || !price.value || !title.value || !description.value || !first_name.value || !last_name.value || !src.value) {
+    alert("Заполните все поля");
+    return;
   }
+
+  const newBook = {
+    id: id.value,
+    year: year.value,
+    price: price.value,
+    title: title.value,
+    description: description.value,
+    first_name: first_name.value,
+    last_name: last_name.value,
+    src: src.value
+  }     
+
+  useBooksStore().editBook(newBook)
+  router.push({name: "Books"})
 }
 </script>
 
