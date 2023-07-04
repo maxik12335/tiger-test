@@ -59,6 +59,7 @@ const books = computed(() => useBooksStore().books)
 function checkBookTitle(value) {
   return value.length > 23 ? value.slice(0,23) : value
 }
+
 </script>
 
 <style scoped>
