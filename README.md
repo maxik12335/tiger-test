@@ -1,24 +1,10 @@
-# tiger
+Установка и запуск
 
-## Project setup
-```
-npm install
-```
+  1. git clone {link}
+  2. npm install
+  3. vue serve
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Не увидел сразу, но решил доделать Options API
+В другой ветке будет Composotion API
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+На всё ушло примерно 2 дня
